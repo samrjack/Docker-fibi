@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Postgres CLient Setup
-Const { Pool } = require('pg');
+const { Pool } = require('pg');
 const pgClient = new Pool({
   user: keys.pgUser,
   host: keys.pgHost,
@@ -51,7 +51,7 @@ app.get('/values/current', async (req, res) => {
   })
 })
 
-app.post('/values' async (req, res) => {
+app.post('/values', async (req, res) => {
   const index = req.body.index;
 
   if (parseInt(index) > 40) {
