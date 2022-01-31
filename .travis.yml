@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before-install:
+  - docker build -t samrjack/client-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true samrjack/client-test npm test
+
+after-success:
+  - docker build -t samrjack/fibi-client ./client
+  - docker build -t samrjack/fibi-worker ./worker
+  - docker build -t samrjack/fibi-server ./server
+  - docker build -t samrjack/fibi-nginx ./nginx
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker
+  - docker push samrjack/fibi-client
+  - docker push samrjack/fibi-worker
+  - docker push samrjack/fibi-server
+  - docker push samrjack/fibi-nginx 
