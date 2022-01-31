@@ -1,6 +1,10 @@
-FROM node:17-alpine3.14
+FROM node:alpine
 WORKDIR "/app"
-COPY package.json ./
+COPY ./package.json ./
 RUN npm install
-COPY ./ ./
+COPY . .
+
+RUN ls
+RUN cat package.json
+
 CMD ["npm", "run", "dev"]

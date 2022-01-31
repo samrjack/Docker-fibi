@@ -5,7 +5,7 @@ class Fib extends Component {
   state = {
     seenIndexes: [],
     values: {},
-    index: ''
+    index: '',
   };
 
   componentDidMount() {
@@ -21,7 +21,7 @@ class Fib extends Component {
   async fetchIndexes() {
     const seenIndexes = await axios.get('/api/values/all');
     this.setState({
-      seenIndexes: seenIndexes.data
+      seenIndexes: seenIndexes.data,
     });
   }
 
@@ -29,8 +29,8 @@ class Fib extends Component {
     event.preventDefault();
 
     await axios.post('/api/values', {
-      index: this.state.index
-    })
+      index: this.state.index,
+    });
     this.setState({ index: '' });
   };
 
@@ -39,11 +39,17 @@ class Fib extends Component {
   }
 
   renderValues() {
-    return this.state.values.map((key) => (
-      <div key={key}>
-        For index {key} I calculated {this.state.values[{key}]}
-      </div>
-    ));
+    const entries = [];
+
+    for (let key in this.state.values) {
+      entries.push(
+        <div key={key}>
+          For index {key} I calculated {this.state.values[key]}
+        </div>
+      );
+    }
+
+    return entries;
   }
 
   render() {
@@ -53,7 +59,7 @@ class Fib extends Component {
           <label>Enter your index:</label>
           <input
             value={this.state.index}
-            onChange={event => this.setState({ index: event.target.value })}
+            onChange={(event) => this.setState({ index: event.target.value })}
           />
           <button>Submit</button>
         </form>
@@ -64,7 +70,7 @@ class Fib extends Component {
         <h3>Calculated Values:</h3>
         {this.renderValues()}
       </div>
-    )
+    );
   }
 }
 
